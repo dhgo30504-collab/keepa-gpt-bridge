@@ -716,3 +716,41 @@ def get_keepa_variations(
             ),
         },
     }
+# =========================================================
+# 4. 共通判断ルール
+# =========================================================
+
+@app.get(
+    "/rules",
+    operation_id="getJudgmentRules"
+)
+def get_judgment_rules(
+    x_action_key: str | None = Header(
+        default=None,
+        alias="X-Action-Key"
+    ),
+):
+    require_action_key(x_action_key)
+
+    rules_path = os.path.join(
+        os.path.dirname(__file__),
+        "judgment_rules.md"
+    )
+
+    if not os.path.exists(rules_path):
+        raise HTTPException(
+            status_code=500,
+            detail="judgment_rules.md is not configured."
+        )
+
+    with open(
+        rules_path,
+        "r",
+        encoding="utf-8"
+    ) as f:
+        rules = f.read()
+
+    return {
+        "version": "1.0",
+        "rules": rules
+    }
