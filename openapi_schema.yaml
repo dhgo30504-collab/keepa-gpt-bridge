@@ -349,3 +349,32 @@ paths:
           description: Unauthorized
         "502":
           description: Keepa API error
+
+
+  /rules:
+    get:
+      operationId: getJudgmentRules
+      summary: Get shared Amazon sourcing judgment rules
+      description: Retrieves the latest shared sourcing judgment rules used by all instructors.
+      parameters:
+        - name: X-Action-Key
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Shared judgment rules
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                  rules:
+                    type: string
+        "401":
+          description: Unauthorized
+        "500":
+          description: Judgment rules error
